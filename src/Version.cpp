@@ -68,37 +68,37 @@ namespace tbaricault::packages
     bool Version::operator<=(const Version& other) const noexcept
     {
         if (this->major != other.major)
-            return (this->major < other.major);
+            return this->major < other.major;
         if (this->minor != other.minor)
-            return (this->minor < other.minor);
-        return (this->patch <= other.patch);
+            return this->minor < other.minor;
+        return this->patch <= other.patch;
     }
 
     bool Version::operator>=(const Version& other) const noexcept
     {
         if (this->major != other.major)
-            return (this->major > other.major);
+            return this->major > other.major;
         if (this->minor != other.minor)
-            return (this->minor > other.minor);
-        return (this->patch >= other.patch);
+            return this->minor > other.minor;
+        return this->patch >= other.patch;
     }
 
     bool Version::operator<(const Version& other) const noexcept
     {
         if (this->major != other.major)
-            return (this->major < other.major);
+            return this->major < other.major;
         if (this->minor != other.minor)
-            return (this->minor < other.minor);
-        return (this->patch < other.patch);
+            return this->minor < other.minor;
+        return this->patch < other.patch;
     }
 
     bool Version::operator>(const Version& other) const noexcept
     {
         if (this->major != other.major)
-            return (this->major > other.major);
+            return this->major > other.major;
         if (this->minor != other.minor)
-            return (this->minor > other.minor);
-        return (this->patch > other.patch);
+            return this->minor > other.minor;
+        return this->patch > other.patch;
     }
 
     Version::operator std::string() const
@@ -108,13 +108,13 @@ namespace tbaricault::packages
             result += '.' + tbaricault::uniconvert::convert<unsigned long, std::string>(this->minor);
         if (this->patch != 0 || !Version::ignorePatch)
             result += '.' + tbaricault::uniconvert::convert<unsigned long, std::string>(this->patch);
-        return (result);
+        return result;
     }
 
     bool Version::match(std::string_view specification) const
     {
         if (specification.empty())
-            return (true);
+            return true;
         std::size_t i = 0;
         while (i < specification.size())
         {
@@ -136,47 +136,47 @@ namespace tbaricault::packages
             if (op[0] == '=' && op[1] == '=')
             {
                 if (!(*this == version))
-                    return (false);
+                    return false;
             }
             else if (op[0] == '!' && op[1] == '=')
             {
                 if (!(*this != version))
-                    return (false);
+                    return false;
             }
             else if (op[0] == '<' && op[1] == '=')
             {
                 if (!(*this <= version))
-                    return (false);
+                    return false;
             }
             else if (op[0] == '>' && op[1] == '=')
             {
                 if (!(*this >= version))
-                    return (false);
+                    return false;
             }
             else if (op[0] == '<' && op[1] == '\0')
             {
                 if (!(*this < version))
-                    return (false);
+                    return false;
             }
             else if (op[0] == '>' && op[1] == '\0')
             {
                 if (!(*this > version))
-                    return (false);
+                    return false;
             }
             else if (op[0] == '^' && op[1] == '\0')
             {
                 if (!(*this >= version && *this < Version(version.major + 1)))
-                    return (false);
+                    return false;
             }
             else if (op[0] == '~' && op[1] == '\0')
             {
                 if (!(*this >= version && *this < Version(version.major, version.minor + 1)))
-                    return (false);
+                    return false;
             }
             else
                 throw std::invalid_argument("invalid operator");
         }
-        return (true);
+        return true;
     }
 
 }
